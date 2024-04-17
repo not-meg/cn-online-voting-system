@@ -1,0 +1,77 @@
+create_user user4 "user4 Name" "user4@gmail.com" user8pass
+create_user user4 "user4 Name" "user4@gmail.com" user8pass
+create_user user5 "user5 Name" "user5@gmail.com" user8pass
+create_user user6 "user6 Name" "user6@gmail.com" user8pass
+create_user user7 "user7 Name" "user7@gmail.com" user8pass
+create_user user__________________________________11 "user7 Name" "user7@gmail.com" user8pass
+#
+# not logged error
+change_user user123 "P 1 2 3 1 2 3" "p123123@gmail.com" "pass_p123123_word"
+#
+# incorrect password
+login_user user7 user8pass
+#
+# login success
+login_user user7 user7_pass
+#
+# change user success
+change_user user7 "User7 New Name" "user7new@gmail.com" "user7_pass"
+logout_user
+#
+# login fail
+login_user "p123" "pass_p123_word"
+#
+#l ogin pass
+login_user "p123" "pass_p123123_word"
+#
+# already logged in erro
+login_user "p123" "pass_p123123_word"
+logout_user
+#
+login_user user7 user7_pass
+create_poll "poll7" "POLL 7" "" "" 'poll7-A' "Choice poll7-A"
+add_poll_choices "poll17" 'poll7-B' "Choice poll7-B"
+add_poll_choices "poll17" 'poll7-B' "Choice poll7-B" 'poll7-C' "Choice poll7-C"
+add_poll_choices "poll17" 'poll7-D' "Choice poll7-D" 'poll7-E' "Choice poll7-E"
+#
+# should succeed
+remove_poll_choices "poll17" 'poll7-F' 'poll7-E'
+#
+# should succeed although poll7-F does not exist
+remove_poll_choices "poll17" 'poll7-F' 'poll7-G'
+#
+# should succeed
+remove_poll_choices "poll17" 'poll7-D' 'poll7-C'
+#
+# should succeed adding poll7-G although poll7-B already exist, should see only one poll7-B
+add_poll_choices "poll17" 'poll7-B' "Choice poll7-B" 'poll7-G' "Choice poll7-G"
+#
+# should succeed adding poll7-H although there is dup. should see only one poll7-H
+add_poll_choices "poll17" 'poll7-H' "Choice poll7-H" 'poll7-H' "Choice poll7-H"
+#
+set_poll_status poll7 C
+#
+# oll not opened
+make_poll_choice poll7 poll7-G
+make_poll_choice poll7 poll7-H
+#
+set_poll_status poll7 O
+make_poll_choice poll7 poll7-G
+make_poll_choice poll7 poll7-H
+#
+# not the owner
+set_poll_status poll1 O
+#
+remove_poll_choices poll7 'poll7-A' 'poll7-B' 'poll7-C' 'poll7-D' 'poll7-E' 'poll7-F' 'poll7-G'
+#
+# login success
+login_user user5 user8pass
+list_users
+list_polls
+set_poll_status poll1 O
+list_polls
+add_poll_choices poll1 Ch3 "choice Ch3" Ch4 "choice Ch4" Ch5 "choice Ch5"
+make_poll_choice poll1 Ch3
+get_poll_results poll1 pie
+get_poll_results poll3 pie
+logout_user
